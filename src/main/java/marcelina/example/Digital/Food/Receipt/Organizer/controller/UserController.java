@@ -1,13 +1,14 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.controller;
 
+import marcelina.example.Digital.Food.Receipt.Organizer.config.LoginRequest;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.UserDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +18,18 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest) {
+        User user = userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
+
+        if (user != null) {
+            UserDTO userDto = new UserDTO(user.getId(), user.getUsername(), user.getEmail());
+            return ResponseEntity.ok(userDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {

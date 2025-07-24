@@ -1,5 +1,7 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.UserMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
@@ -34,6 +36,17 @@ public class UserService {
 
     public Double getUserTotalSpending(Long userId){
         return userRepository.findById(userId).get().getReceipts().getLast().getTotalAmount();
+    }
+
+    public User authenticateUser(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' does not exist"));
+
+        if (user.getPassword().equals(password)) {
+            return user;
+        } else {
+            return null;
+        }
     }
 
 }
