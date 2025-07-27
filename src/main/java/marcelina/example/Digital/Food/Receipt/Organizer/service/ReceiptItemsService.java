@@ -3,7 +3,6 @@ package marcelina.example.Digital.Food.Receipt.Organizer.service;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Receipt;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.ReceiptItem;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptItemMapper;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptItemDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.ReceiptItemRepo;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.ReceiptRepo;

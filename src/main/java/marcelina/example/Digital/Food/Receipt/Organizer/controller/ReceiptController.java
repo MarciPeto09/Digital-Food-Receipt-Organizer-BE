@@ -15,7 +15,7 @@ public class ReceiptController {
     private ReceiptService receiptService;
 
 
-    @PostMapping("/user/{userId}")
+    @PostMapping("/upload/user/{userId}")
     public void createReceipt(@RequestBody ReceiptDTO receiptDTO, @PathVariable Long userId) {
         receiptService.createReceipt(receiptDTO, userId);
     }

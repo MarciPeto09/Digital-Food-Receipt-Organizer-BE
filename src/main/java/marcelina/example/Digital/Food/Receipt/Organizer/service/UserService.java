@@ -49,4 +49,7 @@ public class UserService {
         }
     }
 
+    public void register(UserDTO request) {
+        userRepository.save(userMapper.mapToEntity(request));
+    }
 }
