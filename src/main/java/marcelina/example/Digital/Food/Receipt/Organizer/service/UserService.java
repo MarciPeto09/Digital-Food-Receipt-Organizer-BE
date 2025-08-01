@@ -8,6 +8,7 @@ import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.Receipt
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.UserDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class UserService {
 
     @Autowired
     private ReceiptMapper receiptMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserDTO getUserById(Long userId){
         return userMapper.mapToDto(userRepository.findById(userId).get());
@@ -50,6 +54,15 @@ public class UserService {
     }
 
     public void register(UserDTO request) {
-        userRepository.save(userMapper.mapToEntity(request));
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
 }
