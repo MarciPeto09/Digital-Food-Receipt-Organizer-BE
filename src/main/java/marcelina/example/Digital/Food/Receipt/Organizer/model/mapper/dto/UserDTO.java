@@ -28,4 +28,10 @@ public class UserDTO {
         this.username = username;
         this.email = email;
     }
+
+    public UserDTO(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

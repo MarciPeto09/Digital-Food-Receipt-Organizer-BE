@@ -40,8 +40,6 @@ public class UserMapper {
 
     public User mapToEntity(UserDTO userDTO){
         User user = new User();
-
-        user.setId(userDTO.getId());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setUsername(userDTO.getUsername());
