@@ -25,6 +25,7 @@ public class UserMapper {
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
         userDTO.setUsername(user.getUsername());
+        userDTO.setPhoto(user.getPhotoUrl());
 
         if (user.getReceipts() != null){
             List<ReceiptDTO> receipts = user.getReceipts().stream()
@@ -43,6 +44,7 @@ public class UserMapper {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setUsername(userDTO.getUsername());
+        user.setPhotoUrl(userDTO.getPhoto());
 
         if (userDTO.getReceipts() != null){
             List<Receipt> receipts = userDTO.getReceipts().stream()

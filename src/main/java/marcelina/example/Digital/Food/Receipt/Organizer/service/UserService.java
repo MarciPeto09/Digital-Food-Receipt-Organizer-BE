@@ -1,6 +1,7 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.UserMapper;
@@ -10,8 +11,15 @@ import marcelina.example.Digital.Food.Receipt.Organizer.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -42,27 +50,55 @@ public class UserService {
         return userRepository.findById(userId).get().getReceipts().getLast().getTotalAmount();
     }
 
-    public User authenticateUser(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' does not exist"));
 
-        if (user.getPassword().equals(password)) {
-            return user;
-        } else {
-            return null;
-        }
-    }
-
-    public void register(UserDTO request) {
+    public UserDTO register(UserDTO request) {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
+        return userMapper.mapToDto(user);
     }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
+
+    @Transactional
+    public UserDTO updateUser(Long userId, UserDTO updatedUser, MultipartFile photoFile){
+        User user = userRepository.findById(userId).get();
+
+        if(updatedUser.getUsername() != null && !updatedUser.getUsername().isEmpty()){
+            user.setUsername(updatedUser.getUsername());
+        }
+
+        if(updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()){
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+        if (photoFile != null && !photoFile.isEmpty()) {
+            try {
+                String uploadDir = "uploads/";
+                String fileName = UUID.randomUUID() + "_" + photoFile.getOriginalFilename();
+                Path filePath = Paths.get(uploadDir + fileName);
+
+                Files.createDirectories(filePath.getParent());
+                Files.copy(photoFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                user.setPhotoUrl(fileName);
+            } catch (IOException e) {
+                throw new RuntimeException("Errore nel salvataggio della foto", e);
+            }
+        }
+
+        if(updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()){
+            user.setEmail(updatedUser.getEmail());
+        }
+
+        userRepository.save(user);
+
+        return userMapper.mapToDto(user);
+    }
+
 
 }

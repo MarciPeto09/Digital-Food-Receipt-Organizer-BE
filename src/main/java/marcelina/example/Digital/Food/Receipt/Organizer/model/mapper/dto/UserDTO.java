@@ -20,6 +20,8 @@ public class UserDTO {
 
     private String password;
 
+    private String photo;
+
     private List<ReceiptDTO> receipts;
 
 
