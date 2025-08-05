@@ -1,7 +1,5 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.config;
 import marcelina.example.Digital.Food.Receipt.Organizer.jwt.JwtFilter;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
-import marcelina.example.Digital.Food.Receipt.Organizer.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +33,8 @@ public class SecurityConfig {
                                 "/api/auth/login/**",
                                 "/api/users/register/**",
                                 "/api/users/updateUser/**",
+                                "/api/receipts/**",
+                                "/api/items/**",
                                 "/uploads/**").permitAll()
                         .anyRequest().authenticated()
                 )

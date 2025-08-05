@@ -24,6 +24,13 @@ public class ReceiptItemsService {
     private ReceiptItemMapper receiptItemMapper;
 
 
+    public List<ReceiptItemDTO> getAllItems(){
+        List<ReceiptItem> listOfAllItems = receiptItemRepository.findAll();
+        return listOfAllItems.stream()
+                .map(i -> receiptItemMapper.mapToDto(i))
+                .toList();
+    }
+
     public ReceiptItemDTO addItemToReceipt(Long receiptId, ReceiptItemDTO request){
         Receipt receipt = receiptRepository.findById(receiptId).get();
         receipt.getItems().add(receiptItemMapper.mapToEntity(request));
@@ -43,7 +50,6 @@ public class ReceiptItemsService {
         receiptItem.setItemName(receiptItem.getItemName());
         receiptItem.setQuantity(receiptItem.getQuantity());
         receiptItem.setCategory(request.getCategory());
-        receiptItem.setTotalPrice(request.getTotalPrice());
         receiptItem.setReceipt(request.getReceipt());
 
         return receiptItem;
@@ -51,11 +57,6 @@ public class ReceiptItemsService {
 
     public void deleteItem(Long itemId){
         receiptRepository.deleteById(itemId);
-    }
-
-    public Double calculateTotalForItem(Long itemId){
-        ReceiptItem receiptItem = receiptItemRepository.findById(itemId).get();
-        return receiptItem.getTotalPrice() * receiptItem.getQuantity();
     }
 
     public Double calculateTotalForReceipt(Long receiptId){

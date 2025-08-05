@@ -17,8 +17,6 @@ public class ReceiptItemDTO {
 
     private Double unitPrice;
 
-    private Double totalPrice;
-
     private ItemCategory category;
 
     private List<ReceiptDTO> receipt;

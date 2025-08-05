@@ -26,8 +26,6 @@ public class ReceiptItem {
 
     private Double unitPrice;
 
-    private Double totalPrice;
-
     private ItemCategory category;
 
     @ManyToMany(mappedBy = "items")

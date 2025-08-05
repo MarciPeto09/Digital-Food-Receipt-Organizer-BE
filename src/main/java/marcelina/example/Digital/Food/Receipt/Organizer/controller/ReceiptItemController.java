@@ -15,6 +15,11 @@ public class ReceiptItemController {
     private ReceiptItemsService receiptItemsService;
 
 
+    @GetMapping
+    public List<ReceiptItemDTO> getAllItems(){
+        return receiptItemsService.getAllItems();
+    }
+
     @PostMapping("/receipt/{receiptId}")
     public ReceiptItemDTO addItemToReceipt(@PathVariable Long receiptId, @RequestBody ReceiptItemDTO itemDTO) {
         return receiptItemsService.addItemToReceipt(receiptId, itemDTO);
@@ -36,12 +41,6 @@ public class ReceiptItemController {
     @DeleteMapping("/{itemId}")
     public void deleteItem(@PathVariable Long itemId) {
         receiptItemsService.deleteItem(itemId);
-    }
-
-
-    @GetMapping("/{itemId}/total")
-    public Double calculateTotalForItem(@PathVariable Long itemId) {
-        return receiptItemsService.calculateTotalForItem(itemId);
     }
 
 

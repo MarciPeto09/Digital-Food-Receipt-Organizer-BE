@@ -26,7 +26,6 @@ public class ReceiptItemMapper {
         receiptItemDTO.setItemName(receiptItem.getItemName());
         receiptItemDTO.setQuantity(receiptItem.getQuantity());
         receiptItemDTO.setCategory(receiptItem.getCategory());
-        receiptItemDTO.setTotalPrice(receiptItem.getTotalPrice());
         receiptItemDTO.setUnitPrice(receiptItem.getUnitPrice());
 
         if (receiptItem.getReceipt() != null) {
@@ -50,7 +49,6 @@ public class ReceiptItemMapper {
         receiptItem.setItemName(receiptItemDTO.getItemName());
         receiptItem.setQuantity(receiptItemDTO.getQuantity());
         receiptItem.setCategory(receiptItemDTO.getCategory());
-        receiptItem.setTotalPrice(receiptItemDTO.getTotalPrice());
         receiptItem.setUnitPrice(receiptItemDTO.getUnitPrice());
 
         if (receiptItemDTO.getReceipt() != null) {
