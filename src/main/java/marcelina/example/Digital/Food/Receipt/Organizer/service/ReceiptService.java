@@ -68,25 +68,32 @@ public class ReceiptService {
     }
 
     public void saveReceipt(Long basketId) {
-        Receipt receipt = receiptMapper.mapToEntity(createReceiptFromBasket(basketId));
+        Receipt receipt = new Receipt();
         Basket basket = basketRepository.findById(basketId)
                 .orElseThrow(() -> new RuntimeException("There is no basket with id " + basketId));
+        receipt.setUploadDate(LocalDateTime.now());
+        receipt.setUser(basket.getUser());
+        receipt.setItems(new ArrayList<>());
 
-        receipt.setPurchaseDate(LocalDateTime.now());
-        receiptRepository.save(receipt);
+        double total = 0;
 
         for (BasketItem basketItem : basket.getItems()) {
             ReceiptItem receiptItem = new ReceiptItem();
             receiptItem.setItemName(basketItem.getProduct().getProductName());
             receiptItem.setQuantity(basketItem.getQuantity());
             receiptItem.setUnitPrice(basketItem.getProduct().getUnitPrice());
-            receiptItem.setReceipt(receipt);
 
-            receiptItemRepository.save(receiptItem);
-            receipt.setItems(new ArrayList<>());
+            double itemTotal = basketItem.getQuantity() * basketItem.getProduct().getUnitPrice();
+            receiptItem.setTotalPrice(itemTotal);
+            total += itemTotal;
+
+            receiptItem.setReceipt(receipt);
             receipt.getItems().add(receiptItem);
         }
 
+        receipt.setTotalAmount(total);
+        receipt.setPurchaseDate(LocalDateTime.now());
+        receiptRepository.save(receipt);
         basket.getItems().clear();
         basketRepository.save(basket);
     }
