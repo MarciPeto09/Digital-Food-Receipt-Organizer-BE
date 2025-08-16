@@ -1,7 +1,7 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,32 +10,31 @@ import lombok.Setter;
 
 import java.util.List;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="receiptItem")
-public class ReceiptItem {
+@Table(name="product")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String itemName;
+    private String productName;
 
     private int quantity;
 
     private Double unitPrice;
 
-    private Double totalPrice;
-
     private ItemCategory category;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
-    private Product product;
+    private List<ReceiptItem> receiptItems;
 
-    @ManyToOne
-    @JoinColumn(name = "receipt_id")
-    private Receipt receipt;
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference(value = "product-basketItems")
+    private List<BasketItem> basketItems;
 }

@@ -1,9 +1,9 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.repository;
 
-import marcelina.example.Digital.Food.Receipt.Organizer.model.ReceiptItem;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.Basket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReceiptItemRepo extends JpaRepository<ReceiptItem, Long> {
+public interface BasketRepo extends JpaRepository<Basket, Long> {
 }

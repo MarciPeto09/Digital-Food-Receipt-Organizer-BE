@@ -1,12 +1,13 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.Basket;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.UserMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.UserDTO;
+import marcelina.example.Digital.Food.Receipt.Organizer.repository.BasketRepo;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,9 @@ public class UserService {
     private UserRepo userRepository;
 
     @Autowired
+    private BasketRepo basketRepository;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -35,6 +39,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ReceiptService receiptService;
 
     public UserDTO getUserById(Long userId){
         return userMapper.mapToDto(userRepository.findById(userId).get());
@@ -53,6 +60,9 @@ public class UserService {
 
     public UserDTO register(UserDTO request) {
         User user = new User();
+        final Basket basket = new Basket();
+        basketRepository.save(basket);
+        user.setBasket(basket);
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));

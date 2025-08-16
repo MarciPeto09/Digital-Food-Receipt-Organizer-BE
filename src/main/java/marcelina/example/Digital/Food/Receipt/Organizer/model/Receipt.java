@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name="receipt")
-public class Receipt {
+public class    Receipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,14 +35,16 @@ public class Receipt {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "receipt_receiptitem",
-            joinColumns = @JoinColumn(name = "receipt_id"),
-            inverseJoinColumns = @JoinColumn(name = "receiptitem_id")
-    )
-    private List<ReceiptItem> items;
+    @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReceiptItem> items = new ArrayList<>();
 
     private String imageUrl;
 
+    public Receipt(Long id, LocalDateTime uploadDate, Double totalAmount, User user, List<ReceiptItem> items) {
+        this.id = id;
+        this.uploadDate = uploadDate;
+        this.totalAmount = totalAmount;
+        this.user = user;
+        this.items = items;
+    }
 }

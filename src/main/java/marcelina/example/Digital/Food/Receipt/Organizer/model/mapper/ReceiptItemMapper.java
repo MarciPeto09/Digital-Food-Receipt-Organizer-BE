@@ -4,6 +4,7 @@ import marcelina.example.Digital.Food.Receipt.Organizer.model.Receipt;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.ReceiptItem;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptItemDTO;
+import marcelina.example.Digital.Food.Receipt.Organizer.repository.ReceiptRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,11 @@ import java.util.stream.Collectors;
 public class ReceiptItemMapper {
     @Autowired
     @Lazy
-    private ReceiptMapper receiptMapper;
+    private ReceiptRepo receiptRepository;
+
+    @Autowired
+    @Lazy
+    private ProductMapper productMapper;
 
     public ReceiptItemDTO mapToDto(ReceiptItem receiptItem){
 
@@ -27,16 +32,11 @@ public class ReceiptItemMapper {
         receiptItemDTO.setQuantity(receiptItem.getQuantity());
         receiptItemDTO.setCategory(receiptItem.getCategory());
         receiptItemDTO.setUnitPrice(receiptItem.getUnitPrice());
-
+        receiptItemDTO.setTotalPrice(receiptItem.getTotalPrice());
+        receiptItemDTO.setProductDTO(productMapper.maptoDto(receiptItem.getProduct()));
         if (receiptItem.getReceipt() != null) {
-            List<ReceiptDTO> itemDTOs = receiptItem.getReceipt().stream()
-                    .map(receiptMapper::mapToDto)
-                    .collect(Collectors.toList());
-            receiptItemDTO.setReceipt(itemDTOs);
-        } else {
-            receiptItemDTO.setReceipt(Collections.emptyList());
+            receiptItemDTO.setReceiptId(receiptItem.getReceipt().getId());
         }
-
         return receiptItemDTO;
     }
 
@@ -50,16 +50,13 @@ public class ReceiptItemMapper {
         receiptItem.setQuantity(receiptItemDTO.getQuantity());
         receiptItem.setCategory(receiptItemDTO.getCategory());
         receiptItem.setUnitPrice(receiptItemDTO.getUnitPrice());
-
-        if (receiptItemDTO.getReceipt() != null) {
-            List<Receipt> itemDTOs = receiptItemDTO.getReceipt().stream()
-                    .map(receiptMapper::mapToEntity)
-                    .collect(Collectors.toList());
-            receiptItem.setReceipt(itemDTOs);
-        } else {
-            receiptItem.setReceipt(Collections.emptyList());
+        receiptItem.setTotalPrice(receiptItem.getTotalPrice());
+        receiptItem.setProduct(productMapper.mapToEntity(receiptItemDTO.getProductDTO()));
+        if (receiptItemDTO.getReceiptId() != null) {
+            Receipt receipt = receiptRepository.findById(receiptItemDTO.getReceiptId())
+                    .orElseThrow(() -> new RuntimeException("Receipt with id " + receiptItemDTO.getReceiptId() + " does not exist!"));
+            receiptItem.setReceipt(receipt);
         }
-
         return receiptItem;
     }
 }

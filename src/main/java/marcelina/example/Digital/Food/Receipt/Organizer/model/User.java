@@ -1,5 +1,7 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +32,17 @@ public class User {
     private String photoUrl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Receipt> receipts;
+
+    @OneToOne
+    @JsonManagedReference(value = "user-basket")
+    private Basket basket;
+
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
 }

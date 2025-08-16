@@ -1,16 +1,15 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
-import marcelina.example.Digital.Food.Receipt.Organizer.model.Receipt;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.Vendor;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.*;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
-import marcelina.example.Digital.Food.Receipt.Organizer.repository.ReceiptRepo;
-import marcelina.example.Digital.Food.Receipt.Organizer.repository.UserRepo;
-import marcelina.example.Digital.Food.Receipt.Organizer.repository.VendorRepo;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptItemDTO;
+import marcelina.example.Digital.Food.Receipt.Organizer.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,17 +23,74 @@ public class ReceiptService {
     private UserRepo userRepository;
 
     @Autowired
+    private BasketRepo basketRepository;
+
+    @Autowired
+    private ReceiptItemRepo receiptItemRepository;
+
+    @Autowired
     private VendorRepo vendorRepository;
 
     @Autowired
     private ReceiptMapper receiptMapper;
 
+    public ReceiptDTO createReceiptFromBasket(Long basketId) {
+        Basket basket = basketRepository.findById(basketId)
+                .orElseThrow(() -> new RuntimeException("Basket not found"));
 
-    public void createReceipt(ReceiptDTO receiptDTO, Long userId){
-        Receipt receipt = receiptMapper.mapToEntity(receiptDTO);
-        receipt.setUser(userRepository.findById(userId).get());
-        receiptRepository.save(receipt);
+        if (basket.getItems().isEmpty()) {
+            throw new RuntimeException("Basket is empty");
+        }
+
+        Receipt receipt = new Receipt();
+        receipt.setUploadDate(LocalDateTime.now());
+        receipt.setUser(basket.getUser());
+        receipt.setItems(new ArrayList<>());
+
+        double total = 0;
+
+        for (BasketItem basketItem : basket.getItems()) {
+            ReceiptItem receiptItem = new ReceiptItem();
+            receiptItem.setItemName(basketItem.getProduct().getProductName());
+            receiptItem.setQuantity(basketItem.getQuantity());
+            receiptItem.setUnitPrice(basketItem.getProduct().getUnitPrice());
+
+            double itemTotal = basketItem.getQuantity() * basketItem.getProduct().getUnitPrice();
+            receiptItem.setTotalPrice(itemTotal);
+            total += itemTotal;
+
+            receiptItem.setReceipt(receipt);
+            receipt.getItems().add(receiptItem);
+        }
+
+        receipt.setTotalAmount(total);
+        return receiptMapper.mapToDto(receipt);
     }
+
+    public void saveReceipt(Long basketId) {
+        Receipt receipt = receiptMapper.mapToEntity(createReceiptFromBasket(basketId));
+        Basket basket = basketRepository.findById(basketId)
+                .orElseThrow(() -> new RuntimeException("There is no basket with id " + basketId));
+
+        receipt.setPurchaseDate(LocalDateTime.now());
+        receiptRepository.save(receipt);
+
+        for (BasketItem basketItem : basket.getItems()) {
+            ReceiptItem receiptItem = new ReceiptItem();
+            receiptItem.setItemName(basketItem.getProduct().getProductName());
+            receiptItem.setQuantity(basketItem.getQuantity());
+            receiptItem.setUnitPrice(basketItem.getProduct().getUnitPrice());
+            receiptItem.setReceipt(receipt);
+
+            receiptItemRepository.save(receiptItem);
+            receipt.setItems(new ArrayList<>());
+            receipt.getItems().add(receiptItem);
+        }
+
+        basket.getItems().clear();
+        basketRepository.save(basket);
+    }
+
 
 
     public ReceiptDTO getReceiptById(Long receiptId){
@@ -49,14 +105,6 @@ public class ReceiptService {
                 .toList();
 
     }
-
-    public List<ReceiptDTO> getReceiptsByVendor(Long userId, Long vendorId){
-        Vendor vendor = vendorRepository.findById(vendorId).get();
-        return vendor.getReceipts().stream()
-                .map(receiptMapper::mapToDto)
-                .toList();
-    }
-
 
     public List<ReceiptDTO> searchReceipts(Long userId, String keyword){
         User user = userRepository.findById(userId).get();

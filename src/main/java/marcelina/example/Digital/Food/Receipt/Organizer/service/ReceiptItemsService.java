@@ -46,11 +46,10 @@ public class ReceiptItemsService {
 
     public ReceiptItemDTO updateItem(Long itemId, ReceiptItemDTO request){
         ReceiptItemDTO receiptItem = receiptItemMapper.mapToDto(receiptItemRepository.findById(itemId).get());
-        receiptItem.setReceipt(request.getReceipt());
+        receiptItem.setReceiptId(request.getReceiptId());
         receiptItem.setItemName(receiptItem.getItemName());
         receiptItem.setQuantity(receiptItem.getQuantity());
         receiptItem.setCategory(request.getCategory());
-        receiptItem.setReceipt(request.getReceipt());
 
         return receiptItem;
     }

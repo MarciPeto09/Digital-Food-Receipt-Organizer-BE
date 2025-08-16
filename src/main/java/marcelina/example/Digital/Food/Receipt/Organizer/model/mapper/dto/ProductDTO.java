@@ -1,27 +1,30 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.ItemCategory;
 
 import java.util.List;
+
 @Getter
 @Setter
-public class ReceiptItemDTO {
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductDTO {
     private Long id;
 
-    private String itemName;
+    private String productName;
 
     private int quantity;
 
     private Double unitPrice;
 
-    private Double totalPrice;
-
-    private ProductDTO productDTO;
-
     private ItemCategory category;
 
-    private Long receiptId;
+    private List<ReceiptItemDTO> receiptItemsDto;
+
+
+    private List<BasketItemDTO> basketItemsDto;
 }

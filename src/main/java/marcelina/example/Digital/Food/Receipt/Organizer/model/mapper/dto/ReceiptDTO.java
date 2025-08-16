@@ -2,8 +2,11 @@ package marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.ReceiptItem;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,7 +25,8 @@ public class ReceiptDTO {
 
     private Long userId;
 
-    private List<ReceiptItemDTO> items;
+    private List<ReceiptItemDTO> items = new ArrayList<>();
 
     private String imageUrl;
+
 }

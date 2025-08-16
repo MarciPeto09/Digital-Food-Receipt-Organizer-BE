@@ -1,6 +1,8 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.jwt;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,43 +39,77 @@ public class JwtFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
+        String token = null;
+        String username = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            String username = jwtUtil.extractUsername(token);
+            token = authHeader.substring(7);
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (jwtUtil.validateToken(token)) {
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+            try {
+                username = jwtUtil.extractUsername(token);
+            } catch (ExpiredJwtException ex) {
+                username = ex.getClaims().getSubject();
+            } catch (JwtException ex) {
+                System.out.println("JwtException lancio per il JwtFilter");
+            }
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (jwtUtil.validateToken(token)) {
+                setAuthentication(request, userDetails);
+            }else if (tokenIsExpired(token)) {
+                if (userDetails != null) {
+                    String newToken = jwtUtil.generateToken(
+                            new User(null, userDetails.getUsername(), userDetails.getPassword())
+                    );
+                    response.setHeader("Authorization", "Bearer " + newToken);
+                    setAuthentication(request, userDetails);
                 }
             }
         }
+
         filterChain.doFilter(request, response);
     }
 
-    @Service
-    public static class CustomUserDetailsService implements UserDetailsService {
-
-        private final UserRepo userRepository;
-
-        public CustomUserDetailsService(UserRepo userRepository) {
-            this.userRepository = userRepository;
-        }
-
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    new ArrayList<>()
-            );
+    private boolean tokenIsExpired(String token) {
+        try {
+            jwtUtil.validateToken(token);
+            return false;
+        } catch (ExpiredJwtException e) {
+            return true;
         }
     }
+
+    private void setAuthentication(HttpServletRequest request, UserDetails userDetails) {
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+    }
+
+
+@Service
+public static class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepo userRepository;
+
+    public CustomUserDetailsService(UserRepo userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                new ArrayList<>()
+        );
+    }
 }
+}
+
