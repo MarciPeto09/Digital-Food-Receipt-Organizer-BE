@@ -68,7 +68,7 @@ public class ProductMapper {
         product.setCategory(productDTO.getCategory());
         product.setId(productDTO.getId());
         product.setQuantity(productDTO.getQuantity());
-        product.setUnitPrice(product.getUnitPrice());
+        product.setUnitPrice(productDTO.getUnitPrice());
 
         if(productDTO.getReceiptItemsDto() != null){
             List<ReceiptItem> listOfReceiptItems = productDTO.getReceiptItemsDto().stream()

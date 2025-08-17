@@ -29,6 +29,7 @@ public class BasketItemMapper {
             productDTO.setId(basketItem.getProduct().getId());
             productDTO.setProductName(basketItem.getProduct().getProductName());
             productDTO.setCategory(basketItem.getProduct().getCategory());
+            productDTO.setUnitPrice(basketItem.getProduct().getUnitPrice());
             basketItemDTO.setProductDTO(productDTO);
         }
         if(basketItem.getBasket() != null) {
@@ -54,6 +55,7 @@ public class BasketItemMapper {
             product.setId(basketItemDTO.getProductDTO().getId());
                 product.setProductName(basketItemDTO.getProductDTO().getProductName());
             product.setCategory(basketItemDTO.getProductDTO().getCategory());
+            product.setUnitPrice(basketItemDTO.getProductDTO().getUnitPrice());
             basketItem.setProduct(product);
         }
         return basketItem;
