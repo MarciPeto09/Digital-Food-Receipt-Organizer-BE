@@ -38,7 +38,9 @@ public class SecurityConfig {
                                 "/uploads/**",
                                 "/api/basket/**",
                                 "/api/products/**",
-                                "/api/search/**").permitAll()
+                                "/api/search/**",
+                                "/api/conversation/**",
+                                "/api/message/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

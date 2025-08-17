@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -38,6 +39,18 @@ public class User {
     @OneToOne
     @JsonManagedReference(value = "user-basket")
     private Basket basket;
+
+    @OneToMany(mappedBy = "sender")
+    @JsonIgnore
+    private List<Message> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver")
+    @JsonIgnore
+    private List<Message> receivedMessages = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "participants")
+    @JsonIgnore
+    private List<Conversation> conversationList = new ArrayList<>();
 
     public User(Long id, String username, String password) {
         this.id = id;

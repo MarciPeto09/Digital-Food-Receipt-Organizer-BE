@@ -1,11 +1,13 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto;
 
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Basket;
 
+import java.util.ArrayList;
 import java.util.List;
 @Getter
 @Setter
@@ -26,6 +28,12 @@ public class UserDTO {
     private List<ReceiptDTO> receipts;
 
     private Basket basket;
+
+    @OneToMany(mappedBy = "sender")
+    private List<MessageDTO> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver")
+    private List<MessageDTO> receivedMessages = new ArrayList<>();
 
 
     public UserDTO(Long id, String username, String email) {
