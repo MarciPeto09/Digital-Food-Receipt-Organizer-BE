@@ -43,6 +43,13 @@ public class UserService {
     @Autowired
     private ReceiptService receiptService;
 
+    public List<UserDTO> getAllUsers(){
+        List<User> userList = userRepository.findAll();
+        return userList.stream()
+                .map(u -> userMapper.mapToDto(u))
+                .toList();
+    }
+
     public UserDTO getUserById(Long userId){
         return userMapper.mapToDto(userRepository.findById(userId).get());
     }

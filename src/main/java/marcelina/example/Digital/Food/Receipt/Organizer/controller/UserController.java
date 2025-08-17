@@ -32,6 +32,11 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @GetMapping
+    public List<UserDTO> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

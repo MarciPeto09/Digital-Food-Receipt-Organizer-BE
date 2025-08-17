@@ -14,7 +14,7 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
-    @PostMapping
+    @PostMapping("/createVendor")
     public void createVendor(@RequestBody VendorDTO vendorDTO) {
         vendorService.createVendor(vendorDTO);
     }

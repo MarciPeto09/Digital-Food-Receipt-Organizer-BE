@@ -1,5 +1,6 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
+import marcelina.example.Digital.Food.Receipt.Organizer.model.Vendor;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.VendorMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.VendorDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.ReceiptItemRepo;
@@ -17,7 +18,6 @@ public class VendorService {
 
     @Autowired
     private VendorMapper vendorMapper;
-
 
     public void createVendor(VendorDTO request){
         vendorRepository.save(vendorMapper.mapToEntity(request));

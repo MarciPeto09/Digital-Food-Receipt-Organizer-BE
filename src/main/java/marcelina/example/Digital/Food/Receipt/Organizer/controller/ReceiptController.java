@@ -16,6 +16,11 @@ public class ReceiptController {
     @Autowired
     private ReceiptService receiptService;
 
+    @GetMapping
+    public List<ReceiptDTO> getAllReceipt(){
+        return receiptService.getAllReceipt();
+    }
+
     @PostMapping("/from-basket/{basketId}")
     public ReceiptDTO createReceiptFromBasket(@PathVariable Long basketId) {
         return receiptService.createReceiptFromBasket(basketId);

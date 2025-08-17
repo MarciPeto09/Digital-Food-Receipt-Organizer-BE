@@ -34,6 +34,13 @@ public class ReceiptService {
     @Autowired
     private ReceiptMapper receiptMapper;
 
+    public List<ReceiptDTO> getAllReceipt(){
+        List<Receipt> receiptList = receiptRepository.findAll();
+        return receiptList.stream()
+                .map(r -> receiptMapper.mapToDto(r))
+                .toList();
+    }
+
     public ReceiptDTO createReceiptFromBasket(Long basketId) {
         Basket basket = basketRepository.findById(basketId)
                 .orElseThrow(() -> new RuntimeException("Basket not found"));
