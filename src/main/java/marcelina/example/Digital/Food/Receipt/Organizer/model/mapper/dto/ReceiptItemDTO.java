@@ -2,9 +2,8 @@ package marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.ItemCategory;
+import marcelina.example.Digital.Food.Receipt.Organizer.enumerationClasses.ItemCategory;
 
-import java.util.List;
 @Getter
 @Setter
 public class ReceiptItemDTO {

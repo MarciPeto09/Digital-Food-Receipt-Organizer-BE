@@ -2,11 +2,15 @@ package marcelina.example.Digital.Food.Receipt.Organizer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
+import marcelina.example.Digital.Food.Receipt.Organizer.enumerationClasses.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +27,25 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank
+    @Size(min = 3, max = 20)
     private String username;
 
+    @Email
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
+
+    @Column(nullable = false)
+    private Role role;
 
     private String photoUrl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Receipt> receipts;
+    private List<Receipt> receipts = new ArrayList<>();
 
     @OneToOne
     @JsonManagedReference(value = "user-basket")

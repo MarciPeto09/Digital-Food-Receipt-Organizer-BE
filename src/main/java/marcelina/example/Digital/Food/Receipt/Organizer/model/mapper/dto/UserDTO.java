@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import marcelina.example.Digital.Food.Receipt.Organizer.enumerationClasses.Role;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Basket;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class UserDTO {
     private String email;
 
     private String password;
+
+    private Role role;
 
     private String photo;
 
@@ -47,4 +50,5 @@ public class UserDTO {
         this.email = email;
         this.password = password;
     }
+
 }

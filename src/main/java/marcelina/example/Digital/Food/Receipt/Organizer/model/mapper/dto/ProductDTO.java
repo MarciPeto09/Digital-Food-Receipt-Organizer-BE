@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.ItemCategory;
+import marcelina.example.Digital.Food.Receipt.Organizer.enumerationClasses.ItemCategory;
 
 import java.util.List;
 
