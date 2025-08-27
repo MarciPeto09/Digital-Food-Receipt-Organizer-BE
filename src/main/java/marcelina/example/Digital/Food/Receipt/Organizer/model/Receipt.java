@@ -27,6 +27,8 @@ public class    Receipt {
 
     private Double totalAmount;
 
+    private String deliveryAddress;
+
     @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
@@ -38,6 +40,8 @@ public class    Receipt {
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReceiptItem> items = new ArrayList<>();
 
+
+    //cosa fa??
     private String imageUrl;
 
     public Receipt(Long id, LocalDateTime uploadDate, Double totalAmount, User user, List<ReceiptItem> items) {

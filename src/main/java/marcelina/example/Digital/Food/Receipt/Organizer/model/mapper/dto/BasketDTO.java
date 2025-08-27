@@ -17,5 +17,5 @@ public class BasketDTO {
 
     private User user;
 
-    List<BasketItemDTO> items;
+    private List<BasketItemDTO> items;
 }

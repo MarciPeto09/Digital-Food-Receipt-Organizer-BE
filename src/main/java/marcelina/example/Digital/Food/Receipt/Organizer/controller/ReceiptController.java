@@ -50,4 +50,6 @@ public class ReceiptController {
     public void deleteReceipt(@PathVariable Long receiptId) {
         receiptService.deleteReceipt(receiptId);
     }
+
+
 }

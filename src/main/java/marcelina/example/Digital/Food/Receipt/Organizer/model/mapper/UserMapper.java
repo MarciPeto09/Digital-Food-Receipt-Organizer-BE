@@ -33,6 +33,7 @@ public class UserMapper {
         userDTO.setPhoto(user.getPhotoUrl());
         userDTO.setBasket(user.getBasket());
         userDTO.setRole(user.getRole());
+        userDTO.setDeliveryAddress(user.getDeliveryAddress());
 
         if (user.getReceipts() != null){
             List<ReceiptDTO> receipts = user.getReceipts().stream()
@@ -72,6 +73,7 @@ public class UserMapper {
         user.setPhotoUrl(userDTO.getPhoto());
         user.setBasket(userDTO.getBasket());
         user.setRole(userDTO.getRole());
+        user.setDeliveryAddress(userDTO.getDeliveryAddress());
 
         if (userDTO.getReceipts() != null){
             List<Receipt> receipts = userDTO.getReceipts().stream()

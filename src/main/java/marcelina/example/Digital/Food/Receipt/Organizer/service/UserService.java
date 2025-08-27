@@ -119,4 +119,10 @@ public class UserService {
     }
 
 
+    public void addAddress(Long userId, String deliveryAddress){
+        User user = userRepository.findById(userId).get();
+        user.setDeliveryAddress(deliveryAddress);
+        userRepository.save(user);
+    }
+
 }

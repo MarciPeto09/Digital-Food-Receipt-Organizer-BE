@@ -3,15 +3,12 @@ package marcelina.example.Digital.Food.Receipt.Organizer.service;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.*;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ReceiptMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptItemDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class ReceiptService {
@@ -53,6 +50,7 @@ public class ReceiptService {
         receipt.setUploadDate(LocalDateTime.now());
         receipt.setUser(basket.getUser());
         receipt.setItems(new ArrayList<>());
+        receipt.setDeliveryAddress(basket.getUser().getDeliveryAddress());
 
         double total = 0;
 
@@ -81,6 +79,7 @@ public class ReceiptService {
         receipt.setUploadDate(LocalDateTime.now());
         receipt.setUser(basket.getUser());
         receipt.setItems(new ArrayList<>());
+        receipt.setDeliveryAddress(basket.getUser().getDeliveryAddress());
 
         double total = 0;
 
@@ -128,18 +127,6 @@ public class ReceiptService {
                 .toList();
     }
 
-    public ReceiptDTO updateReceipt(Long receiptId, ReceiptDTO updatedRequest){
-        ReceiptDTO receiptDTO = receiptMapper.mapToDto(receiptRepository.findById(receiptId).get());
-        receiptDTO.setId(updatedRequest.getId());
-        receiptDTO.setUserId(updatedRequest.getUserId());
-        receiptDTO.setItems(updatedRequest.getItems());
-        receiptDTO.setPurchaseDate(updatedRequest.getPurchaseDate());
-        receiptDTO.setUploadDate(updatedRequest.getUploadDate());
-        receiptDTO.setTotalAmount(updatedRequest.getTotalAmount());
-        receiptDTO.setImageUrl(updatedRequest.getImageUrl());
-
-        return receiptDTO;
-    }
 
     public void deleteReceipt(Long receiptId){
         receiptRepository.deleteById(receiptId);

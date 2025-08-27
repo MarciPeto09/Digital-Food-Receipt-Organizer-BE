@@ -51,4 +51,5 @@ public class BasketController {
     public Double getTotal(@RequestParam Long basketId){
         return basketService.getTotal(basketId);
     }
+
 }

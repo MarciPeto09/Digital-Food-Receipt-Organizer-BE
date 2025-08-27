@@ -32,6 +32,8 @@ public class UserDTO {
 
     private Basket basket;
 
+    private String deliveryAddress;
+
     @OneToMany(mappedBy = "sender")
     private List<MessageDTO> sentMessages = new ArrayList<>();
 

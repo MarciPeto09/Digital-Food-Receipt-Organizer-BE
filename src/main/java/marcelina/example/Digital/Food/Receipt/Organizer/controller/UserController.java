@@ -86,4 +86,11 @@ public class UserController {
     public Double getUserTotalSpending(@PathVariable Long id) {
         return userService.getUserTotalSpending(id);
     }
+
+
+
+    @PutMapping("/deliveryAddress")
+    public void addAddress(@RequestParam Long userId, @RequestParam String deliveryAddress){
+        userService.addAddress(userId,deliveryAddress);
+    }
 }

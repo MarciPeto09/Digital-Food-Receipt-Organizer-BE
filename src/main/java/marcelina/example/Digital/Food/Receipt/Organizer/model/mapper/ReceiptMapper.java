@@ -33,6 +33,7 @@ public class ReceiptMapper {
         receiptDTO.setTotalAmount(receipt.getTotalAmount());
         receiptDTO.setPurchaseDate(receipt.getPurchaseDate());
         receiptDTO.setUploadDate(receipt.getUploadDate());
+        receiptDTO.setDeliveryAddress(receipt.getDeliveryAddress());
         if(receipt.getVendor() != null ){
             receiptDTO.setVendorId(receipt.getVendor().getId());
         }
@@ -59,6 +60,7 @@ public class ReceiptMapper {
         receipt.setPurchaseDate(receiptDTO.getPurchaseDate());
         receipt.setTotalAmount(receiptDTO.getTotalAmount());
         receipt.setUser(userRepository.findById(receiptDTO.getUserId()).get());
+        receipt.setDeliveryAddress(receiptDTO.getDeliveryAddress());
         if(receiptDTO.getVendorId() != null){
             receipt.setVendor(vendorRepository.findById(receiptDTO.getVendorId()).get());
         }

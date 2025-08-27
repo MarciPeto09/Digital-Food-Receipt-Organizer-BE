@@ -4,6 +4,7 @@ package marcelina.example.Digital.Food.Receipt.Organizer.service;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Basket;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.BasketItem;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Product;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.Receipt;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.BasketMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.BasketDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.BasketItemRepo;

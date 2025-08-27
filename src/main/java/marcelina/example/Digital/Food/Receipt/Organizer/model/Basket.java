@@ -30,5 +30,4 @@ public class Basket {
     @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonManagedReference(value = "basket-items")
     List<BasketItem> items  = new ArrayList<>();
-
 }

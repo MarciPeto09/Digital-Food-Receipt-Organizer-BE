@@ -21,6 +21,8 @@ public class ReceiptDTO {
 
     private Double totalAmount;
 
+    private String deliveryAddress;
+
     private Long vendorId;
 
     private Long userId;
