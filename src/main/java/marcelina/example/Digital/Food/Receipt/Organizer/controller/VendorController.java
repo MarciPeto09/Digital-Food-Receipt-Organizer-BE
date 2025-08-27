@@ -1,5 +1,6 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.controller;
 
+import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ProductDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.VendorDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class VendorController {
     }
 
     @GetMapping("/{id}")
-    public VendorDTO getVendorById(@PathVariable Long id) {
-        return vendorService.getVendorById(id);
+    public List<ProductDTO> getVendorProducts(@PathVariable Long id) {
+        return vendorService.getVendorProducts(id);
     }
 
     @GetMapping
@@ -34,7 +35,7 @@ public class VendorController {
         return vendorService.updateVendor(id, vendorDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteVendor(@PathVariable Long id) {
         vendorService.deleteVendor(id);
     }

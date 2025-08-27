@@ -3,16 +3,16 @@ package marcelina.example.Digital.Food.Receipt.Organizer.model.mapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.BasketItem;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Product;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.ReceiptItem;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.Vendor;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.BasketItemDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ProductDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptItemDTO;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.VendorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class ProductMapper {
@@ -20,6 +20,8 @@ public class ProductMapper {
     @Autowired
     @Lazy
     private ReceiptItemMapper receiptItemMapper;
+
+
 
 
     public ProductDTO maptoDto(Product product){
@@ -32,6 +34,12 @@ public class ProductMapper {
         productDTO.setQuantity(product.getQuantity());
         productDTO.setProductName(product.getProductName());
         productDTO.setUnitPrice(product.getUnitPrice());
+        if(product.getVendor() != null){
+            VendorDTO vendorDTO = new VendorDTO();
+            vendorDTO.setId(product.getVendor().getId());
+            vendorDTO.setName(product.getVendor().getName());
+            productDTO.setVendorDTO(vendorDTO);
+        }
 
         if(product.getReceiptItems() != null){
             List<ReceiptItemDTO> listOfReceiptItems = product.getReceiptItems().stream()
@@ -69,6 +77,12 @@ public class ProductMapper {
         product.setId(productDTO.getId());
         product.setQuantity(productDTO.getQuantity());
         product.setUnitPrice(productDTO.getUnitPrice());
+        if(productDTO.getVendorDTO() != null){
+            Vendor vendor = new Vendor();
+            vendor.setId(productDTO.getVendorDTO().getId());
+            vendor.setName(productDTO.getVendorDTO().getName());
+            product.setVendor(vendor);
+        }
 
         if(productDTO.getReceiptItemsDto() != null){
             List<ReceiptItem> listOfReceiptItems = productDTO.getReceiptItemsDto().stream()

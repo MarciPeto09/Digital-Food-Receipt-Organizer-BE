@@ -1,7 +1,9 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Vendor;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ProductMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.VendorMapper;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ProductDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.VendorDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.ReceiptItemRepo;
 import marcelina.example.Digital.Food.Receipt.Organizer.repository.VendorRepo;
@@ -19,12 +21,18 @@ public class VendorService {
     @Autowired
     private VendorMapper vendorMapper;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     public void createVendor(VendorDTO request){
         vendorRepository.save(vendorMapper.mapToEntity(request));
     }
 
-    public VendorDTO getVendorById(Long vendorId){
-        return vendorMapper.mapToDto(vendorRepository.findById(vendorId).get());
+    public List<ProductDTO> getVendorProducts(Long vendorId){
+        Vendor vendor = vendorRepository.findById(vendorId).get();
+        return vendor.getProducts().stream()
+                .map(p -> productMapper.maptoDto(p))
+                .toList();
     }
 
     public List<VendorDTO> getAllVendors(){

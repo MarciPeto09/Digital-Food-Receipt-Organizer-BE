@@ -31,6 +31,10 @@ public class Product {
 
     private ItemCategory category;
 
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
+
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<ReceiptItem> receiptItems;

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import marcelina.example.Digital.Food.Receipt.Organizer.enumerationClasses.ItemCategory;
+import marcelina.example.Digital.Food.Receipt.Organizer.model.Vendor;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class ProductDTO {
     private Double unitPrice;
 
     private ItemCategory category;
+
+    private VendorDTO vendorDTO;
 
     private List<ReceiptItemDTO> receiptItemsDto;
 
