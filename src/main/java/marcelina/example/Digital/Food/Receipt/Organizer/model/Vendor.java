@@ -28,5 +28,5 @@ public class Vendor {
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Receipt> receipts;
+    private List<Receipt> receipts = new ArrayList<>();
 }

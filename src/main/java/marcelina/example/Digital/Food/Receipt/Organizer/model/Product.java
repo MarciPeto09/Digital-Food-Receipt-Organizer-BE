@@ -29,6 +29,7 @@ public class Product {
 
     private Double unitPrice;
 
+    @Enumerated(EnumType.STRING)
     private ItemCategory category;
 
     @ManyToOne

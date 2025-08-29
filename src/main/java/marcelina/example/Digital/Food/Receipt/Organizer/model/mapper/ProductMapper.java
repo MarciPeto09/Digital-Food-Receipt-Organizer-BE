@@ -8,22 +8,12 @@ import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.BasketI
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ProductDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptItemDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.VendorDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
 @Component
 public class ProductMapper {
-
-    @Autowired
-    @Lazy
-    private ReceiptItemMapper receiptItemMapper;
-
-
-
-
     public ProductDTO maptoDto(Product product){
         if (product == null) {
             return null;
@@ -42,10 +32,18 @@ public class ProductMapper {
         }
 
         if(product.getReceiptItems() != null){
-            List<ReceiptItemDTO> listOfReceiptItems = product.getReceiptItems().stream()
-                    .map(i -> receiptItemMapper.mapToDto(i))
-                    .toList();
-            productDTO.setReceiptItemsDto(listOfReceiptItems);
+            List<ReceiptItem> receiptItems = product.getReceiptItems();
+            for (ReceiptItem receiptItem : receiptItems){
+                ReceiptItemDTO receiptItemDTO = new ReceiptItemDTO();
+                receiptItemDTO.setId(receiptItem.getId());
+                receiptItemDTO.setItemName(receiptItem.getItemName());
+                receiptItemDTO.setQuantity(receiptItem.getQuantity());
+                receiptItemDTO.setCategory(receiptItem.getCategory());
+                receiptItemDTO.setUnitPrice(receiptItem.getUnitPrice());
+                receiptItemDTO.setTotalPrice(receiptItem.getTotalPrice());
+                productDTO.getReceiptItemsDto().add(receiptItemDTO);
+            }
+
         }else{
             productDTO.setReceiptItemsDto(Collections.emptyList());
         }
@@ -85,10 +83,18 @@ public class ProductMapper {
         }
 
         if(productDTO.getReceiptItemsDto() != null){
-            List<ReceiptItem> listOfReceiptItems = productDTO.getReceiptItemsDto().stream()
-                    .map(i -> receiptItemMapper.mapToEntity(i))
-                    .toList();
-            product.setReceiptItems(listOfReceiptItems);
+            List<ReceiptItemDTO> receiptItemsDto = productDTO.getReceiptItemsDto();
+            for (ReceiptItemDTO receiptItemDTO : receiptItemsDto){
+                ReceiptItem receiptItem = new ReceiptItem();
+                receiptItem.setId(receiptItemDTO.getId());
+                receiptItem.setItemName(receiptItemDTO.getItemName());
+                receiptItem.setQuantity(receiptItemDTO.getQuantity());
+                receiptItem.setCategory(receiptItemDTO.getCategory());
+                receiptItem.setUnitPrice(receiptItemDTO.getUnitPrice());
+                receiptItem.setTotalPrice(receiptItemDTO.getTotalPrice());
+                product.getReceiptItems().add(receiptItem);
+            }
+
         }else{
             product.setReceiptItems(Collections.emptyList());
         }

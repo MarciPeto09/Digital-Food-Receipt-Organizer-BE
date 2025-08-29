@@ -1,5 +1,6 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.service;
 
+import marcelina.example.Digital.Food.Receipt.Organizer.enumerationClasses.ItemCategory;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Product;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.ProductMapper;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ProductDTO;
@@ -20,6 +21,13 @@ public class ProductService {
 
     public List<ProductDTO> getAllProducts(){
         List<Product> productList = productRepo.findAll();
+        return productList.stream()
+                .map(p -> productMapper.maptoDto(p))
+                .toList();
+    }
+
+    public List<ProductDTO> getProductsXCategory(ItemCategory itemCategory){
+        List<Product>  productList = productRepo.findByCategory(itemCategory);
         return productList.stream()
                 .map(p -> productMapper.maptoDto(p))
                 .toList();
