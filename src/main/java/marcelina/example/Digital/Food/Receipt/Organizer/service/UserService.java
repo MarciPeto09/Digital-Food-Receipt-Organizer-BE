@@ -51,7 +51,9 @@ public class UserService {
     }
 
     public UserDTO getUserById(Long userId){
-        return userMapper.mapToDto(userRepository.findById(userId).get());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with id " + userId + " does not exist!"));
+        return userMapper.mapToDto(user);
     }
 
     public List<ReceiptDTO> getUserReceipts(Long userId){

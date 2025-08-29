@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login/**",
-                                "/api/users/updateUser/**",
+                                "/api/users/**",
                                 "/api/users/register/**",
                                 "/api/receipts/**",
                                 "/api/items/**",
