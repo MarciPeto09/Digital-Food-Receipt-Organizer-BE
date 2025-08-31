@@ -15,4 +15,15 @@ public interface MessageRepo extends JpaRepository<Message,Long> {
             "ORDER BY m.dateTime ASC")
     List<Message> findConversationBetweenUsers(@Param("user1") Long user1,
                                                @Param("user2") Long user2);
+
+
+    @Query("SELECT m FROM Message m WHERE m.sender.id = :senderId AND m.receiver.id = :receiverId AND m.seen = false")
+    List<Message> findBySenderIdAndRecipientIdAndSeenFalse(@Param("senderId") Long senderId,
+                                                           @Param("receiverId") Long receiverId);
+
+    @Query("SELECT COUNT(m) FROM Message m " +
+            "WHERE m.sender.id = :senderId AND m.receiver.id = :receiverId AND m.seen = false ")
+    int countUnseenMessagesPerSender(@Param("senderId") Long senderId,
+                                     @Param("receiverId") Long receiverId);
+
 }

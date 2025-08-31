@@ -31,7 +31,6 @@ public class MessageService {
     private ConversationRepo conversationRepository;
 
    public MessageDTO sendMessage(MessageRequest messageRequest){
-
        Message message = new Message();
        User sender = userRepository.findById(messageRequest.getSenderId()).get();
        message.setSender(sender);
@@ -60,9 +59,16 @@ public class MessageService {
                .toList();
    }
 
-    public boolean markAsRead(Long messageId){
-       Message message = messageRepository.findById(messageId).get();
-       message.setSeen(true);
-       return true;
+    public void markMessagesAsSeen(Long senderId, Long receiverId) {
+        List<Message> messages = messageRepository.findBySenderIdAndRecipientIdAndSeenFalse(senderId, receiverId);
+        for (Message msg : messages) {
+            msg.setSeen(true);
+        }
+        messageRepository.saveAll(messages);
     }
+
+    public int countUnseenMessagesPerSender(Long senderId, Long receiverId){
+       return messageRepository.countUnseenMessagesPerSender(senderId,receiverId);
+    }
+
 }

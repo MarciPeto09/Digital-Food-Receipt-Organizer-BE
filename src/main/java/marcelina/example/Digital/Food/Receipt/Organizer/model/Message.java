@@ -41,5 +41,5 @@ public class Message {
 
     private LocalDateTime dateTime;
 
-    private boolean seen;
+    private boolean seen =  false;
 }
