@@ -28,6 +28,11 @@ public class VendorService {
         vendorRepository.save(vendorMapper.mapToEntity(request));
     }
 
+    public VendorDTO getVendorById(Long vendorId){
+        Vendor vendor = vendorRepository.findById(vendorId).get();
+        return vendorMapper.mapToDto(vendor);
+    }
+
     public List<ProductDTO> getVendorProducts(Long vendorId){
         Vendor vendor = vendorRepository.findById(vendorId).get();
         return vendor.getProducts().stream()

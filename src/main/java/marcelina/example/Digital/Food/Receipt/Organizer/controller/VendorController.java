@@ -25,6 +25,11 @@ public class VendorController {
         return vendorService.getVendorProducts(id);
     }
 
+    @GetMapping("/vendorById/{vendorId}")
+    public VendorDTO getVendorById(@PathVariable Long vendorId){
+        return vendorService.getVendorById(vendorId);
+    }
+
     @GetMapping
     public List<VendorDTO> getAllVendors() {
         return vendorService.getAllVendors();
