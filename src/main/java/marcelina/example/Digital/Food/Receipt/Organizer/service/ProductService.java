@@ -26,6 +26,11 @@ public class ProductService {
                 .toList();
     }
 
+    public ProductDTO getProductById(Long productId){
+        Product product = productRepo.findById(productId).get();
+        return productMapper.maptoDto(product);
+    }
+
     public List<ProductDTO> getProductsXCategory(ItemCategory itemCategory){
         List<Product>  productList = productRepo.findByCategory(itemCategory);
         return productList.stream()
