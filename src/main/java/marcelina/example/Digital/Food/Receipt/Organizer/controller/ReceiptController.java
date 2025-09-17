@@ -36,6 +36,11 @@ public class ReceiptController {
         return receiptService.getReceiptById(receiptId);
     }
 
+    @GetMapping("/getReceiptThatContainReceiptItem/{itemId}")
+    public List<ReceiptDTO> getReceiptThatContainReceiptItem(@PathVariable Long itemId){
+        return receiptService.getReceiptThatContainReceiptItem(itemId);
+    }
+
     @GetMapping("/user/{userId}")
     public List<ReceiptDTO> getReceiptsByUser(@PathVariable Long userId) {
         return receiptService.getReceiptsByUser(userId);

@@ -132,4 +132,12 @@ public class ReceiptService {
         receiptRepository.deleteById(receiptId);
     }
 
+
+    public List<ReceiptDTO> getReceiptThatContainReceiptItem(Long itemId){
+        List<Receipt> receiptList = receiptRepository.findAllByReceiptItemId(itemId);
+        return receiptList.stream()
+                .map(r -> receiptMapper.mapToDto(r))
+                .toList();
+    }
+
 }
