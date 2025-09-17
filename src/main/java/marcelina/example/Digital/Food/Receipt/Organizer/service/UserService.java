@@ -69,6 +69,16 @@ public class UserService {
 
     public UserDTO register(UserDTO request) {
         User user = new User();
+        if (request.getUsername() == null || request.getEmail() == null || request.getPassword() == null || request.getRole() == null) {
+            throw new IllegalArgumentException("All fields are required");
+        }
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Email is already taken");
+        }
         final Basket basket = new Basket();
         basketRepository.save(basket);
         user.setBasket(basket);
