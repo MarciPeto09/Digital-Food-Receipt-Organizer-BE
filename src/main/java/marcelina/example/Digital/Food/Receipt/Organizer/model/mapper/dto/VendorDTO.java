@@ -17,6 +17,4 @@ public class VendorDTO {
     private String location;
 
     private List<ProductDTO> productDTOs = new ArrayList<>();
-
-    private List<ReceiptDTO> receipts;
 }

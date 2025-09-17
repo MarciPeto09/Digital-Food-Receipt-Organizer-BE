@@ -49,7 +49,6 @@ public class VendorService {
         VendorDTO vendorDTO = vendorMapper.mapToDto(vendorRepository.findById(vendorId).get());
         vendorDTO.setId(request.getId());
         vendorDTO.setName(request.getName());
-        vendorDTO.setReceipts(request.getReceipts());
         return vendorDTO;
     }
 

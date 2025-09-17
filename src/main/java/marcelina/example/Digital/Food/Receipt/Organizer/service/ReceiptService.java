@@ -57,6 +57,7 @@ public class ReceiptService {
         for (BasketItem basketItem : basket.getItems()) {
             ReceiptItem receiptItem = new ReceiptItem();
             receiptItem.setItemName(basketItem.getProduct().getProductName());
+            receiptItem.setProduct(basketItem.getProduct());
             receiptItem.setQuantity(basketItem.getQuantity());
             receiptItem.setUnitPrice(basketItem.getProduct().getUnitPrice());
 

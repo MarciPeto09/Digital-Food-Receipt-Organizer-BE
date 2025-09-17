@@ -23,8 +23,6 @@ public class ReceiptDTO {
 
     private String deliveryAddress;
 
-    private Long vendorId;
-
     private Long userId;
 
     private List<ReceiptItemDTO> items = new ArrayList<>();

@@ -1,10 +1,8 @@
 package marcelina.example.Digital.Food.Receipt.Organizer.model.mapper;
 
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Product;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.Receipt;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.Vendor;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ProductDTO;
-import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.ReceiptDTO;
 import marcelina.example.Digital.Food.Receipt.Organizer.model.mapper.dto.VendorDTO;
 import org.springframework.stereotype.Component;
 
@@ -66,21 +64,6 @@ public class VendorMapper {
         vendor.setId(vendorDTO.getId());
         vendor.setName(vendorDTO.getName());
         vendor.setLocation(vendorDTO.getLocation());
-
-        if(vendorDTO.getReceipts() != null){
-            List<ReceiptDTO> receiptDTOList = vendorDTO.getReceipts();
-            for (ReceiptDTO receiptDTO : receiptDTOList){
-                Receipt receipt = new Receipt();
-                receipt.setId(receiptDTO.getId());
-                receipt.setImageUrl(receiptDTO.getImageUrl());
-                receipt.setPurchaseDate(receiptDTO.getPurchaseDate());
-                receipt.setTotalAmount(receiptDTO.getTotalAmount());
-                receipt.setDeliveryAddress(receiptDTO.getDeliveryAddress());
-                vendor.getReceipts().add(receipt);
-            }
-        }else{
-            vendor.setReceipts(Collections.emptyList());
-        }
 
         if(vendorDTO.getProductDTOs() != null){
             List<ProductDTO> productDTOS = vendorDTO.getProductDTOs();
